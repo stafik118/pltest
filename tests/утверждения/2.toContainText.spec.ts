@@ -10,6 +10,10 @@ test('1. Проверка статического текста', async ({ page 
   // 2. Проверить что он содержит текст "static text block"
   // 3. Проверить что он содержит текст "important information"
   // 4. Проверить что он НЕ содержит текст "dynamic content"
+  const stat = page.locator('#static-text');
+  await expect(stat).toContainText('static text block');
+  await expect(stat).toContainText('important information');
+  await expect(stat).not.toContainText('dynamic content');
 });
 
 test('2. Проверка динамически изменяемого текста', async ({ page }) => {
@@ -19,6 +23,16 @@ test('2. Проверка динамически изменяемого текс
   // 3. Проверить что текст теперь содержит "Text was changed at"
   // 4. Нажать кнопку #add-part
   // 5. Проверить что текст теперь содержит "(additional part)"
+  const dyn = page.locator('#dynamic-text');
+  await expect(dyn).toContainText('Initial dynamic text');
+
+  const chan = page.locator('#change-text');
+  await chan.click();
+  await expect(dyn).toContainText('Text was changed at');
+
+  const add = page.locator('#add-part');
+  await add.click();
+  await expect(dyn).toContainText('(additional part)');
 });
 
 test('3. Проверка списка элементов', async ({ page }) => {
@@ -28,6 +42,13 @@ test('3. Проверка списка элементов', async ({ page }) => 
   // 3. Проверить что он содержит текст "Intermediate"
   // 4. Нажать кнопку #add-item
   // 5. Проверить что список теперь содержит текст "New added item"
+  const iti = page.locator('#item-list');
+  await expect(iti).toContainText('Item 1: Basic');
+  await expect(iti).toContainText('Intermediate');
+
+  const add1 = page.locator('#add-item');
+  await add1.click();
+  await expect(iti).toContainText('New added item');
 });
 
 test('4. Проверка скрытого/отображаемого текста', async ({ page }) => {
@@ -36,6 +57,13 @@ test('4. Проверка скрытого/отображаемого текст
   // 2. Нажать кнопку #toggle-text
   // 3. Проверить что элемент теперь содержит текст "special content"
   // 4. Проверить что элемент содержит текст "hidden but now is visible"
+  const hid = page.locator('#hidden-content');
+  await expect(hid).not.toBeVisible();
+
+  const togg = page.locator('#toggle-text');
+  await togg.click();
+  await expect(hid).toContainText('special content');
+  await expect(hid).toContainText('hidden but now is visible');
 });
 
 test('5. Проверка частичного совпадения в длинном тексте', async ({ page }) => {
@@ -45,4 +73,9 @@ test('5. Проверка частичного совпадения в длин�
   // 3. Проверить что он содержит "lazy dog"
   // 4. Проверить что он содержит "all letters of the English alphabet"
   // 5. Проверить что он НЕ содержит "all letters of the Russian alphabet"
+  const part1 = page.locator('#partial-text');
+  await expect(part1).toContainText('quick brown fox');
+  await expect(part1).toContainText('lazy dog');
+  await expect(part1).toContainText('all letters of the English alphabet');
+  await expect(part1).not.toContainText('all letters of the Russian alphabet');
 });

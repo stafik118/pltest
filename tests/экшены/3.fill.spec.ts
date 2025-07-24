@@ -11,7 +11,7 @@ test.describe('Заполнение базовых полей формы', () =>
   // 3. Проверить что значение установлено правильно
   test('Заполнение текстового поля', async ({ page }) => {
     const usernameField = page.getByLabel('Имя пользователя');
-    // твой код
+    await usernameField.fill('Иван Иванов');
     await expect(usernameField).toHaveValue('Иван Иванов');
   });
 
@@ -25,11 +25,11 @@ test.describe('Заполнение базовых полей формы', () =>
     const emailField = page.getByPlaceholder('example@mail.com');
     const errorFeedback = page.getByText('Введите корректный email');
 
-    // твой код
+    await emailField.fill('sdf');
     await emailField.blur(); // Триггерим валидацию
     await expect(errorFeedback).toBeVisible();
 
-    // твой код
+    await emailField.fill('staf11@mail.ru');
     await emailField.blur(); // Триггерим валидацию
     await expect(errorFeedback).toBeHidden();
   });
@@ -48,7 +48,7 @@ test.describe('Заполнение специальных типов полей
     const bioField = page.getByLabel('Краткая биография');
     const longText = 'Меня зовут Иван.\nЯ работаю тестировщиком.\nЛюблю автоматизацию.';
 
-    // твой код
+    await bioField.fill(longText);
     await expect(bioField).toHaveValue(longText);
   });
 
@@ -59,8 +59,10 @@ test.describe('Заполнение специальных типов полей
   // 4. Проверить что не-числовые значения не принимаются
   test('Заполнение числового поля', async ({ page }) => {
     const ageField = page.getByLabel('Возраст');
+    const Vale = 30;
+    const asd = String(Vale);
 
-    // твой код
+    await ageField.fill(asd);
     await expect(ageField).toHaveValue('30');
   });
 });
@@ -79,11 +81,15 @@ test.describe('Валидация и сложные сценарии запол�
   test('Валидация телефона по паттерну', async ({ page }) => {
     const phoneField = page.getByLabel('Телефон');
     const errorFeedback = page.getByText('Требуется 10 цифр');
+    const aq = 12345;
+    const qa = String(aq);
+    const sd = 4567633333;
+    const ds = String(sd);
 
-    // твой код
+    await phoneField.fill(qa);
     await expect(errorFeedback).toBeVisible();
 
-    // твой код
+    await phoneField.fill(ds);
     await expect(errorFeedback).toBeHidden();
   });
 
@@ -94,14 +100,18 @@ test.describe('Валидация и сложные сценарии запол�
   // 4. Заполнить полностью
   test('Постепенное заполнение с очисткой', async ({ page }) => {
     const cardField = page.getByLabel('Кредитная карта');
-
-    // твой код
+    const zx = 1234;
+    const xz = String(zx);
+    const faq = 1234567890123456;
+    const qaf = String(faq);
+    const formal = qaf.replace(/(\d{4})(?=\d)/g, '$1 ');
+    await cardField.fill(xz);
     await expect(cardField).toHaveValue('1234');
 
     await cardField.clear();
     await expect(cardField).toHaveValue('');
 
-    // твой код
+    await cardField.fill(formal);
     await expect(cardField).toHaveValue('1234 5678 9012 3456');
   });
 });

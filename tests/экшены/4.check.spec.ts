@@ -17,12 +17,12 @@ test.describe('Работа с базовыми чекбоксами', () => {
     const status = page.locator('#newsletter-status');
 
     await expect(newsletterCheckbox).not.toBeChecked();
-    // твой код
+    await newsletterCheckbox.check();
     await expect(newsletterCheckbox).toBeChecked();
     await expect(status).toHaveText('Подписаны');
     await expect(status).toHaveClass(/checked/);
 
-    // твой код
+    await newsletterCheckbox.uncheck();
     await expect(newsletterCheckbox).not.toBeChecked();
     await expect(status).toHaveText('Не подписаны');
   });
@@ -36,7 +36,7 @@ test.describe('Работа с базовыми чекбоксами', () => {
     const termsCheckbox = page.getByLabel('Я принимаю условия соглашения');
 
     await expect(termsCheckbox).toHaveAttribute('required', '');
-    // твой код
+    await termsCheckbox.check();
     await expect(termsCheckbox).toBeChecked();
   });
 });
@@ -56,7 +56,7 @@ test.describe('Сложные сценарии работы с check()', () => {
     const tosContainer = page.locator('.tos-container');
 
     await tosContainer.scrollIntoViewIfNeeded();
-    // твой код
+    await agreeCheckbox.check();
     await expect(agreeCheckbox).toBeChecked();
   });
 
@@ -73,7 +73,7 @@ test.describe('Сложные сценарии работы с check()', () => {
     await expect(dynamicCheckbox1).toBeVisible({ timeout: 2000 });
     await expect(dynamicCheckbox2).toBeChecked();
 
-    // твой код
+    await dynamicCheckbox1.check();
     await expect(dynamicCheckbox1).toBeChecked();
     await expect(dynamicCheckbox2).toBeChecked();
   });
@@ -93,14 +93,23 @@ test.describe('Комплексное тестирование формы с ч�
   // 6. Проверить все состояния
   test('Полное заполнение формы с проверкой состояний', async ({ page }) => {
     // Чекбоксы
-    // твой код
-    // твой код
+    const rassil = page.getByLabel('Подписаться на рассылку');
+    await rassil.check();
+    const sogl = page.getByLabel('Я принимаю условия соглашения');
+    await sogl.check();
 
     // Группа интересов
 
-    // твой код
-    // твой код
-    // твой код
+    const Sport = page.getByLabel('Спорт');
+    await Sport.check();
+    const Music = page.getByLabel('Музыка');
+    await Music.uncheck();
+    const Kino = page.getByLabel('Кино');
+    await Kino.check();
+    const Ros = page.getByLabel('Почта России');
+    await Ros.check();
+    const Usedd = page.getByLabel('Я прочитал и согласен с условиями');
+    await Usedd.check();
 
     // Радио-кнопки
     // твой код

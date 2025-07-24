@@ -10,6 +10,21 @@ test('1. Проверка начальных классов элементов',
   // 2. Проверить что box1 не имеет класса "error"
   // 3. Найти элемент box2 и проверить что он имеет класс "error"
   // 4. Найти элемент box3 и проверить что он имеет класс "hidden"
+  const box1 = page.locator('#box1');
+  const box2 = page.locator('#box2');
+  const box3 = page.locator('#box3');
+
+  // 1. box1 имеет класс "active"
+  await expect(box1).toHaveClass(/active/);
+
+  // 2. box1 не имеет класс "error"
+  await expect(box1).not.toHaveClass(/error/);
+
+  // 3. box2 имеет класс "error"
+  await expect(box2).toHaveClass(/error/);
+
+  // 4. box3 имеет класс "hidden"
+  await expect(box3).toHaveClass(/hidden/);
 });
 
 test('2. Проверка переключения классов box1', async ({ page }) => {
@@ -50,4 +65,27 @@ test('5. Проверка элемента с несколькими класс�
   // 4. Проверить что класс "large" удален
   // 5. Проверить что класс "rounded" остался
   // 6. Проверить что элемент имеет класс "box" (основной класс)
+  const element = page.locator('#multi-class');
+  const btnChangeClasses = page.locator('button', { hasText: 'Изменить классы' });
+
+  // 1. Проверяем, что элемент имеет все классы: box, warning, large, rounded (в любом порядке)
+  await expect(element).toHaveClass(/box/);
+  await expect(element).toHaveClass(/warning/);
+  await expect(element).toHaveClass(/large/);
+  await expect(element).toHaveClass(/rounded/);
+
+  // 2. Нажимаем кнопку "Изменить классы"
+  await btnChangeClasses.click();
+
+  // 3. Проверяем, что класс "warning" заменен на "error"
+  await expect(element).toHaveClass(/error/);
+
+  // 4. Проверяем, что класс "large" удален
+  await expect(element).not.toHaveClass(/large/);
+
+  // 5. Проверяем, что класс "rounded" остался
+  await expect(element).toHaveClass(/rounded/);
+
+  // 6. Проверяем, что элемент имеет класс "box"
+  await expect(element).toHaveClass(/box/);
 });
