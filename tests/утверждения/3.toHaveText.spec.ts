@@ -103,5 +103,5 @@ test('5. Проверка динамического списка', async ({ pag
   // 6. Проверить что текст стал: "Empty list"
   await expect(page.locator('#items-list')).toHaveText('Empty list', {
     normalizeWhitespace: false,
-  });
+  });await expect(page.getByLabel('Main', { exact: true })).toContainText('Community');
 });

@@ -1,17 +1,56 @@
 import { test, expect } from '@playwright/test';
 
+const elements = [
+  {
+    locator: (page) => page.getByRole('link', { name: 'Playwright logo Playwright' }),
+    name: 'Playwright logo',
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'Docs' }),
+    name: 'Docs',
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'API' }),
+    name: 'API',
+  },
+  {
+    locator: (page) => page.getByRole('button', { name: 'Node.js' }),
+    name: 'Node.js',
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'Community' }),
+    name: 'Community',
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'GitHub repository' }),
+    name: 'GH',
+  },
+  {
+    locator: (page) => page.getByRole('link', { name: 'Discord server' }),
+    name: 'DS',
+  },
+];
+
 test('Проверка отображения элементов навигации хедера', async ({ page }) => {
   await page.goto('https://playwright.dev/');
-  await expect(page.getByRole('link', { name: 'Playwright logo Playwright' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Docs' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'API' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Node.js' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Community' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'GitHub repository' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Discord server' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Switch between dark and light' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Search (Ctrl+K)' })).toBeVisible();
+  elements.forEach(({ locator, name }) => {
+    test.step(`Проверка отображения элемента ${name}`, async () => {
+      await expect.soft(locator(page)).toBeVisible();
+    });
+  });
 });
+
+//   await expect.soft(page.getByRole('link', { name: 'Docs' })).toBeVisible();
+//   await expect.soft(page.getByRole('link', { name: 'API' })).toBeVisible();
+//   await expect.soft(page.getByRole('button', { name: 'Node.js' })).toBeVisible();
+//   await expect.soft(page.getByRole('link', { name: 'Community' })).toBeVisible();
+//   await expect.soft(page.getByRole('link', { name: 'GitHub repository' })).toBeVisible();
+//   await expect.soft(page.getByRole('link', { name: 'Discord server' })).toBeVisible();
+//   await expect
+//     .soft(page.getByRole('button', { name: 'Switch between dark and light' }))
+//     .toBeVisible();
+//   await expect.soft(page.getByRole('button', { name: 'Search (Ctrl+K)' })).toBeVisible();
+// });
 
 test('Проверка названий элементов навигации', async ({ page }) => {
   await page.goto('https://playwright.dev/');
